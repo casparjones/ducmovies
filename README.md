@@ -7,6 +7,6 @@ phyton filmverleih testprojekt
 - change the db settings in /lib/DataHolder.py
 
 On Terminal
-'''
-pip install PyMySQL
-python simple_gui.py
+
+´´´ pip install PyMySQL
+´´´ python simple_gui.py
