@@ -2,7 +2,7 @@
 phyton filmverleih testprojekt
 
 # start
-- install phyton 3.6, mysql
+- install phyton 3.5.2, mysql
 - import db data in /db/mysql-create.sql
 - change the db settings in /lib/DataHolder.py
 
