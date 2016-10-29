@@ -8,5 +8,6 @@ phyton filmverleih testprojekt
 
 On Terminal
 
-´´´ pip install PyMySQL
-´´´ python simple_gui.py
+``` 
+pip install PyMySQL
+python simple_gui.py
