@@ -67,8 +67,8 @@ class DataHolder:
     def save_ausleih(self, kunde, mitarbeiter, film, date):
         sql = "INSERT INTO `ausleih` (`Kunde`, `Mitarbeiter`, `Datum`, `Film`) " + \
               "VALUES (" \
-              "'" + kunde + "', " \
-              "'" + mitarbeiter + "', " \
+              "'" + str(kunde) + "', " \
+              "'" + str(mitarbeiter) + "', " \
               "'" + date + "', " \
               "'" + str(film["Filmnummer"]) + "');"
 
@@ -189,10 +189,13 @@ class DataHolder:
             cursor.execute(sql)
         self.connection.commit()
 
-    def get_mitarbeiter(self):
+    def get_mitarbeiter(self, filiale=None):
         with self.connection.cursor() as cursor:
             # Read a single record
-            sql = "SELECT * FROM `mitarbeiter`"
+            if filiale is None:
+                sql = "SELECT * FROM `mitarbeiter`"
+            else:
+                sql = "SELECT * FROM `mitarbeiter` WHERE filiale = '" + str(filiale["Filialennummer"]) + "'"
             cursor.execute(sql)
             result = cursor.fetchall()
             cursor.close()

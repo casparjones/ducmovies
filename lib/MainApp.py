@@ -14,7 +14,7 @@ import datetime
 
 class MainApp(object):
     def __init__(self, root):
-        self.filale = NONE
+        self.filiale = NONE
         self.film = NONE
         self.root = root
         self.form = {}
@@ -29,7 +29,7 @@ class MainApp(object):
         self.createmenu()
 
     def open_filiale(self, filiale):
-        self.filale = filiale
+        self.filiale = filiale
         self.show_movies()
 
     def close_app(self):
@@ -75,10 +75,10 @@ class MainApp(object):
                 Label(self.mainframe, text=rowValue[colKey]).grid(column=col, row=row, sticky=W)
 
     def show_movies(self):
-        if self.filale is NONE:
+        if self.filiale is NONE:
             return
 
-        filme = self.dh.get_filme(self.filale)
+        filme = self.dh.get_filme(self.filiale)
         self.frame_clean_up()
 
         c = ["Titel", "Genre", "Erscheinungsjahr", "Verliehen"]
@@ -89,7 +89,7 @@ class MainApp(object):
         row = 1
         for film in filme:
             row += 1
-            verliehen = self.dh.get_film_verliehen_in_filiale(film, self.filale)
+            verliehen = self.dh.get_film_verliehen_in_filiale(film, self.filiale)
             if verliehen is None:
                 Label(self.mainframe, text=" ./. ").grid(column=4, row=row, sticky=W)
                 Button(self.mainframe, text="verleihen", command=lambda inner_film=film: self.add_ausleih(inner_film)) \
@@ -103,24 +103,39 @@ class MainApp(object):
     def add_ausleih(self, film):
         self.frame_clean_up()
 
+        kunden = self.dh.get_kunden()
+        kunden_options = {}
+        for kunde in kunden:
+            kunden_options[kunde["Vorname"] + " " + kunde["Name"]] = kunde["Kundennummer"]
+
+        mitarbeiter = self.dh.get_mitarbeiter(self.filiale)
+        mitarbeiter_options = {}
+        for each_mitarbeiter in mitarbeiter:
+            mitarbeiter_options[each_mitarbeiter["Vorname"] + " " + each_mitarbeiter["Name"]] = \
+                each_mitarbeiter["Mitarbeiternummer"]
+
+        kunden_id = StringVar()
+        mitarbeiter_id = StringVar()
         form = {
-            "Kunde": Text(self.mainframe, height=1, width=30),
-            "Mitarbeiter": Text(self.mainframe, height=1, width=30),
+            "Kunde": OptionMenu(self.mainframe, kunden_id, *kunden_options),
+            "Mitarbeiter": OptionMenu(self.mainframe, mitarbeiter_id, *mitarbeiter_options),
         }
 
         self.add_form_textfield("Kunde", None, 2, form)
         self.add_form_textfield("Mitarbeiter", None, 3, form)
 
         Button(self.mainframe, text="save",
-               command=lambda inner_form=form: self.save_ausleih(form, film))\
+               command=lambda inner_form=form: self.save_ausleih(
+                   kunden_id, mitarbeiter_id, film, kunden_options, mitarbeiter_options))\
             .grid(column=1, row=6, columnspan=2, sticky=E)
         return
 
-    def save_ausleih(self, form, film):
+    def save_ausleih(self, kunden_id, mitarbeiter_id, film, kunden_options, mitarbeiter_options):
         now = datetime.datetime.now()
+
         self.dh.save_ausleih(
-            form["Kunde"].get("0.0", END).rstrip(),
-            form["Mitarbeiter"].get("0.0", END).rstrip(),
+            kunden_options[kunden_id.get()],
+            mitarbeiter_options[mitarbeiter_id.get()],
             film, now.strftime("%d.%m.%Y"))
         self.show_movies()
 
@@ -151,7 +166,7 @@ class MainApp(object):
             filialen.add_command(label=self.filiale_name(filiale),
                                  command=lambda inner_filiale=filiale: self.open_filiale(inner_filiale))
 
-        self.open_filiale(filialen_data.shift())
+        self.open_filiale(filialen_data.pop(0))
 
         help_menu = Menu(menu)
         menu.add_cascade(label="Grunddaten", menu=help_menu)
