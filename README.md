@@ -16,4 +16,4 @@ On Terminal
 
 ``` 
 pip install PyMySQL
-python simple_gui.py
+python start.py
