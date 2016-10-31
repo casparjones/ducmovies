@@ -84,7 +84,7 @@ class DataHolder:
             sql = "UPDATE `mitarbeiter` SET " + \
                 "`Name` = '" + mitarbeiter["Name"] + "', " \
                 "`Vorname` = '" + mitarbeiter["Vorname"] + "', " \
-                "`Filiale` = '" + mitarbeiter["Filiale"] + "', " \
+                "`Filiale` = '" + str(mitarbeiter["Filiale"]) + "', " \
                 "`Gehalt` = '" + mitarbeiter["Gehalt"] + "'" + \
                 " WHERE `Mitarbeiternummer` = '" + str(mitarbeiter["Mitarbeiternummer"]) + "';"
         else:
@@ -93,8 +93,8 @@ class DataHolder:
                   "VALUES (" \
                   "'" + mitarbeiter["Name"] + "', " \
                   "'" + mitarbeiter["Vorname"] + "', " \
-                  "'" + mitarbeiter["Filiale"] + "', " \
-                  "'" + mitarbeiter["Gehalt"] + "');"
+                  "'" + str(mitarbeiter["Filiale"]) + "', " \
+                  "'" + str(mitarbeiter["Gehalt"]) + "');"
 
         with self.connection.cursor() as cursor:
             cursor.execute(sql)
@@ -134,7 +134,7 @@ class DataHolder:
             cursor.close()
             return result
 
-    def get_filalen(self):
+    def get_filialen(self):
         with self.connection.cursor() as cursor:
             # Read a single record
             sql = "SELECT * FROM `filiale`"

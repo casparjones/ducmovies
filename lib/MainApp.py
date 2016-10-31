@@ -55,7 +55,7 @@ class MainApp(object):
 
     def add_form_textfield(self, label, data, row, form):
         Label(self.mainframe, text=label).grid(column=1, row=row, sticky=W)
-        if data is not None:
+        if data is not None and type(form[label]) is Text:
             form[label].insert(INSERT, self.get_content(data, label))
         form[label].grid(column=2, row=row)
 
@@ -157,7 +157,7 @@ class MainApp(object):
         return data[key]
 
     def createmenu(self):
-        filialen_data = self.dh.get_filalen()
+        filialen_data = self.dh.get_filialen()
         menu = Menu(self.root)
         self.root.config(menu=menu)
         filialen = Menu(menu)

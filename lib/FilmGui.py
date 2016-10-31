@@ -75,7 +75,7 @@ class FilmGui(object):
         if self.film is not NONE:
             Label(self.mainframe, text="Film in Filialen editieren:", font=self.headerFont) \
                 .grid(column=1, row=4, columnspan=2, sticky=W)
-            filialen = self.dh.get_filalen()
+            filialen = self.dh.get_filialen()
             self.checkbox_values = {}
             for filiale in filialen:
                 row += 1
