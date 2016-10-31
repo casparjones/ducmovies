@@ -2,10 +2,10 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter.font import Font
 
-from lib.DataHolder import DataHolder
-from lib.FilmGui import FilmGui
-from lib.MitarbeiterGui import MitarbeiterGui
-from lib.KundenGui import KundenGui
+from ducmovies.DataHolder import DataHolder
+from ducmovies.FilmGui import FilmGui
+from ducmovies.MitarbeiterGui import MitarbeiterGui
+from ducmovies.KundenGui import KundenGui
 
 import tkinter.messagebox
 import tkinter
@@ -26,7 +26,10 @@ class MainApp(object):
         self.mitarbeiterGui = MitarbeiterGui(self.dh, self.mainframe, self.headerFont, self)
         self.kundenGui = KundenGui(self.dh, self.mainframe, self.headerFont, self)
 
-        self.createmenu()
+        filialen_data = self.dh.get_filialen()
+        self.createmenu(filialen_data)
+
+        self.root.protocol("WM_DELETE_WINDOW", self.close_app)
 
     def open_filiale(self, filiale):
         self.filiale = filiale
@@ -156,8 +159,7 @@ class MainApp(object):
             return default
         return data[key]
 
-    def createmenu(self):
-        filialen_data = self.dh.get_filialen()
+    def createmenu(self, filialen_data):
         menu = Menu(self.root)
         self.root.config(menu=menu)
         filialen = Menu(menu)

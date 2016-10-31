@@ -2,12 +2,13 @@ import pymysql.cursors
 
 
 class DataHolder:
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='',
-                                 db='duc',
-                                 charset='utf8mb4',
-                                 cursorclass=pymysql.cursors.DictCursor)
+    def __init__(self):
+        self.connection = pymysql.connect(host='localhost',
+                                          user='root',
+                                          password='',
+                                          db='duc',
+                                          charset='utf8mb4',
+                                          cursorclass=pymysql.cursors.DictCursor)
 
     def close_connection(self):
         if self.connection.open:
